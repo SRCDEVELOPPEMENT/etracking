@@ -28,7 +28,10 @@ class Livraison extends Model
         'nom_client',
         'phone_client',
         'itinerary',
-        'observation'
+        'observation',
+        'type_livraison',
+        'etat_livraison',
+        'destination',
     ];
 
     public function vehicules()

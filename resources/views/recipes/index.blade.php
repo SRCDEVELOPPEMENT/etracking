@@ -46,16 +46,18 @@
                                         <thead class="bg-dark text-white">
                                             <tr>
                                                 <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>NATURE CHARGEMENT</th>
-                                                <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VALEUR PAR TONNE</th>
+                                                <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VALEUR PAR TONNE (FCFA)</th>
                                                 <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>ITINERAIRE</th>
+                                                <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>KILOMETRAGE</th>
                                                 <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                             </tr>
                                         </thead>
                                         <tfoot class="bg-dark text-white">
                                             <tr>
                                                 <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>NATURE CHARGEMENT</th>
-                                                <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VALEUR PAR TONNE</th>
+                                                <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VALEUR PAR TONNE (FCFA)</th>
                                                 <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>ITINERAIRE</th>
+                                                <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>KILOMETRAGE</th>
                                                 <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                             </tr>
                                         </tfoot>
@@ -65,6 +67,7 @@
                                                         <td><label>{{ $recipe->nature }}</label></td>
                                                         <td><label>{{ $recipe->value }}</label></td>
                                                         <td><label>{{ $recipe->itinerary }}</label></td>
+                                                        <td><label>{{ $recipe->kilometrage }}</label></td>
                                                         <td>
                                                             @can('editer-recette')
                                                             <button class="btn btn-sm btn-info btn-icon-split mr-2" id="btnEdit" data-recipe="{{ $recipe }}" data-vehicule="{{ $recipe->vehicule_id }}" data-itinerary="{{ $recipe->itinerary }}" data-value="{{ $recipe->value }}" data-nature="{{ $recipe->nature }}" data-id="{{ $recipe->id }}">
@@ -123,19 +126,16 @@
                                                     <input type="number" class="form-control"
                                                         id="value" name="value">
                                                 </div>
-                                                <!-- <div class="form-group">
-                                                <label>Véhicule<span style="color:red;">  *</span></label></br>
-                                                    <select class="form-control" id="vehicule_id" name="vehicule_id">
-                                                    <option value="">Selectionner Un Véhicule</option>
-                                                    @foreach($cars as $car)
-                                                    <option value="{{ $car->id }}">{{ $car->Immatriculation }}</option>
-                                                    @endforeach
-                                                    </select>
-                                                </div> -->
                                                 <div class="form-group">
                                                     <label for="">Itineraire <span style="color:red;">  *</span></label>
                                                     <input type="text" class="form-control"
                                                         id="itinerary" name="itinerary"
+                                                        >
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">kilométrage <span style="color:red;"></span></label>
+                                                    <input type="number" min="1" class="form-control"
+                                                        id="tntage" name="kilometrage"
                                                         >
                                                 </div>
                                                 <hr>
@@ -185,20 +185,17 @@
                                                     <input type="text" class="form-control"
                                                         id="values" name="value">
                                                 </div>
-                                                <!-- <div class="form-group">
-                                                    <label for="">Véhicule <span style="color:red;">  *</span></label>
-                                                    <select class="form-control" id="vehicule_ids" name="vehicule_id">
-                                                        <option value="">Selectionner Un Véhicule</option>
-                                                        @foreach($cars as $car)
-                                                        <option value="{{ $car->id }}">{{ $car->Immatriculation }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div> -->
                                                 <div class="form-group">
                                                     <label for="">Itinéraire<span style="color:red;">  *</span></label>
                                                     <input type="text" class="form-control"
                                                         id="itinerarys" name="itinerary"
                                                     >
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">kilométrage<span style="color:red;"></span></label>
+                                                    <input type="number" min="1" class="form-control"
+                                                        id="tntages" name="kilometrage"
+                                                        >
                                                 </div>
                                                 <hr>
                                                 <div class="row">
@@ -233,8 +230,8 @@
                                   </div>
     </div>
     
-        <!-- Modal Confirmation Save Recipe -->
-        <div class="modal fade" id="modalConfirmationSaveRecette" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Modal Confirmation Save Recipe -->
+    <div class="modal fade" id="modalConfirmationSaveRecette" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-info text-white">

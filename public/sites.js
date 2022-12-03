@@ -18,6 +18,10 @@ $('#btnSaveSite').on('click', function(){
         good = false;
         message += "Veuillez Renseigner Un Type De Site !\n";
     }
+    if(!$('#site_ville').val().trim()){
+        good = false;
+        message += "Veuillez Renseigner Une Ville !\n";
+    }
     if(!$('#region').val().trim()){
         good = false;
         message += "Veuillez Renseigner Une Région !\n";
@@ -155,6 +159,10 @@ $('#btnEditSite').on('click', function(){
     if(!$('#site_types').val().trim()){
         good = false;
         message += "Veuillez Renseigner Un Type De Site !\n";
+    }
+    if(!$('#site_villes').val().trim()){
+        good = false;
+        message += "Veuillez Renseigner Une Ville !\n";
     }
     if(!$('#regions').val().trim()){
         good = false;

@@ -13,7 +13,7 @@ class Site extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'site_name', 'site_type', 'region_id'
+        'id', 'site_name', 'site_type', 'region_id', 'ville'
     ];
 
     public function regions()

@@ -12,7 +12,12 @@ class Recipe extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'itinerary', 'nature', 'value', 'vehicule_id'
+        'id',
+        'itinerary', 
+        'nature', 
+        'value',
+        'vehicule_id', 
+        'kilometrage'
     ];
 
     public function vehicules()

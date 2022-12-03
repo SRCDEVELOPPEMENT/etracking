@@ -86,7 +86,8 @@ $(document).on('click', '#btnEdit', function(){
     $('.form-group #values').val(value);
     $('.form-group #itinerarys').val(itinerary);
     $('.form-group #vehicule_ids').val(newRecipe.vehicule_id);
-    
+    $('.form-group #tntages').val(newRecipe.kilometrage);
+
     $('#modalEditrecipe').attr('data-backdrop', 'static');
     $('#modalEditrecipe').attr('data-keyboard', 'false');
     $('#modalEditrecipe').modal('show');

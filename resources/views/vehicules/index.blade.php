@@ -38,11 +38,6 @@
                                 <div class="col-md-6 text-lg text-left" style="color:black;">
                                     Liste Des Véhicules
                                 </div>
-                                <div class="col-md-6 text-right">
-                                    <button class="btn btn-dark btn-sm btn-icon-split"
-                                    data-toggle="modal" data-target="#modalAddCarToPersonne" data-backdrop="static" data-keyboard="false"
-                                     title="Affectation" id="btnAffectation"><span class="icon text-white-80 mr-2"><i class="fas fa-lg fa-user mr-1"></i><i class="fas fa-sm fa-truck"></i></span><span class="m-1">Attribution Véhicule </span></button>
-                                </div>
                             </div>
                         </div>
                         
@@ -55,6 +50,7 @@
                                                 <th><i class="fas fa-lg fa-trademark mr-3" style="color:#252A37;"></i>TONNAGE</th>
                                                 <th><i class="fas fa-lg fa-signal mr-3" style="color:#252A37;"></i>MODEL</th>
                                                 <th><i class="fas fa-lg fa-hashtag mr-3" style="color:#252A37;"></i>STATUT</th>
+                                                <th><i class="fas fa-lg fa-money mr-3" style="color:#252A37;"></i>OBJECTIF</th>
                                                 <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                             </tr>
                                         </thead>
@@ -64,6 +60,7 @@
                                                 <th><i class="fas fa-lg fa-trademark mr-3" style="color:#252A37;"></i>TONNAGE</th>
                                                 <th><i class="fas fa-lg fa-signal mr-3" style="color:#252A37;"></i>MODEL</th>
                                                 <th><i class="fas fa-lg fa-hashtag mr-3" style="color:#252A37;"></i>STATUT</th>
+                                                <th><i class="fas fa-lg fa-money mr-3" style="color:#252A37;"></i>OBJECTIF</th>
                                                 <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                             </tr>
                                         </tfoot>
@@ -73,7 +70,8 @@
                                                         <td><label>{{ $vehicule->Immatriculation }}</label></td>
                                                         <td><label>{{ $vehicule->tonnage }}</label></td>
                                                         <td><label>{{ $vehicule->ModelVehicule }}</label></td>
-                                                        <td><label>{{ $vehicule->StatutVehicule }}</label></td>
+                                                        <td><label style="font-size:1.5em;">{{ $vehicule->StatutVehicule }}</label></td>
+                                                        <td><label>{{ $vehicule->objectif }}</label></td>
                                                         <td>
                                                         @can('editer-vehicule')
                                                             <button class="btn btn-sm btn-info btn-icon-split mr-2" id="btnEdit"
@@ -113,7 +111,7 @@
     <div class="modal fade" id="modalVehicule" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header  bg-primary text-white">
+                <div class="modal-header  bg-dark text-white">
                     <h5 class="modal-title">
                         <span class="icon text-white-80">
                                 <i class="fas fa-plus" style="font-size:10px;"></i>
@@ -150,6 +148,10 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <input type="number" class="form-control form-control-user"
+                                                            id="objectif" name="objectif" placeholder="Objectif Du Vehicule (FCFA)">
+                                                    </div>
                                                     <hr>
                                                     <div class="row">
                                                         <button type="button" id="btnSaveVehicule" class="btn btn-primary col-md-6 mr-4 ml-1">
@@ -171,7 +173,7 @@
     <div class="modal fade" id="modalEditvehicule" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title">
                     <span class="icon text-white-80">
                                 <i class="fas fa-pen" style="font-size:10px;"></i>
@@ -218,57 +220,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalAddCarToPersonne" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-                <div class="modal-header  bg-primary text-white">
-                    <h5 class="modal-title">
-                        <span class="icon text-white-80">
-                                <i class="fas fa-lg fa-user"></i>
-                                <i class="fas fa-truck  mr-3" style="font-size:10px;"></i>
-                        </span>
-                    Attribution D'un Véhicule A Un Chauffeur</h5>
-                    <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="AddPersontoCarFormInsert" autocomplete="off">
-                    {{ csrf_field() }}
-                        @csrf
-                                                <div class="form-group">
-                                                    <label for="">Véhicule</label>
-                                                    <select class="form-control" id="vehicule" name="vehicule_id">
-                                                        <option value="">Selectionnez Un Véhicule</option>
-                                                        @foreach($vehicules as $vehicule)
-                                                        <option value="{{ $vehicule->id }}">{{ $vehicule->Immatriculation }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">Poste</label>
-                                                    <select class="form-control" data-personnes="{{ $personnes }}" id="poste" name="poste">
-                                                        <option value="">Selectionnez Un Poste</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="">Personne</label>
-                                                    <select class="form-control" id="chauffeur" name="chauffeur_id">
-                                                        <option value="">Selectionnez Une Personne</option>
-                                                        
-                                                    </select>
-                                                </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <button type="button" id="btnAddCarToPersonne" class="btn btn-primary col-md-6 mr-2 ml-2"><i class="fas fa-lg fa-save mr-2"></i>Attribuer</button>
-                                                    <button type="button" id="btnExit" class="btn btn-danger col-md-5"><i class="fas fa-lg fa-times mr-2"></i>Annuler</button>
-                                                </div>
-                    </form>
-                </div>
-          </div>
         </div>
     </div>
 

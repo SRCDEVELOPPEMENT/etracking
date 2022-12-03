@@ -42,16 +42,18 @@
                                             <thead class="bg-dark text-white">
                                                 <tr>
                                                 <th><i class="fas fa-lg fa-city mr-3" style="color:#252A37;"></i>SITE</th>
-                                                    <th><i class="fas fa-lg fa-suitcase mr-3" style="color:#252A37;"></i>TYPE</th>
-                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>REGION</th>
+                                                    <th><i class="fas fa-lg fa-suitcase mr-3" style="color:#252A37;"></i>TYPE SITE</th>
+                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VILLE SITE</th>
+                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>REGION SITE</th>
                                                     <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                                 </tr>
                                             </thead>
                                             <tfoot class="bg-dark text-white">
                                                 <tr>
                                                     <th><i class="fas fa-lg fa-city mr-3" style="color:#252A37;"></i>SITE</th>
-                                                    <th><i class="fas fa-lg fa-suitcase mr-3" style="color:#252A37;"></i>TYPE</th>
-                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>REGION</th>
+                                                    <th><i class="fas fa-lg fa-suitcase mr-3" style="color:#252A37;"></i>TYPE SITE</th>
+                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>VILLE SITE</th>
+                                                    <th><i class="fas fa-lg fa-globe mr-3" style="color:#252A37;"></i>REGION SITE</th>
                                                     <th><i class="fas fa-lg fa-toolbox mr-3" style="color:#252A37;"></i>ACTIONS</th>
                                                 </tr>
                                             </tfoot>
@@ -60,6 +62,7 @@
                                                         <tr style="font-size:15px; color:black;">
                                                             <td><label>{{ $site->site_name }}</label></td>
                                                             <td><label>{{ $site->site_type }}</label></td>
+                                                            <td><label>{{ $site->ville }}</label></td>
                                                             <td><label>{{ $site->regions->region_name }}</td>
                                                             <td>
                                                                 @can('editer-site')
@@ -124,6 +127,14 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
+                                                    <select class="form-control" id="site_ville" name="ville">
+                                                        <option value="">Ville Du Site</option>
+                                                        @foreach($villes as $ville)
+                                                        <option value="{{ $ville }}">{{ $ville }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
                                                     <select class="form-control" id="region" name="region_id">
                                                     <option value="">Région Du Site</option>
                                                     @foreach($regions as $region)
@@ -179,6 +190,14 @@
                                                     <option value="">Type De Site</option>
                                                     <option value="AGENCE">AGENCE</option>
                                                     <option value="MAGASIN">MAGASIN</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="site_villes" name="ville">
+                                                        <option value="">Ville Du Site</option>
+                                                        @foreach($villes as $ville)
+                                                        <option value="{{ $ville }}">{{ $ville }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">

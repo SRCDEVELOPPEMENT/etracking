@@ -35,6 +35,10 @@ $('#btnAddLivraison').on('click', async function(){
         good = false;
         message+="Veuillez Renseigner Un Itinéraire !\n";
     }
+    if(!$('#destination').val().trim()){
+        good = false;
+        message+="Veuillez Renseigner Une Destination !\n";
+    }
     if(!$('#nom_client').val().trim()){
         good = false;
         message+="Veuillez Renseigner Le Nom Du Client !\n";
@@ -43,23 +47,7 @@ $('#btnAddLivraison').on('click', async function(){
         good = false;
         message+="Veuillez Renseigner Le Téléphone Du Client !\n";
     }else{
-        if(reg.test($('#phone_client').val())){
-            if($('#phone_client').val().length == 9){
-                if(parseInt($('#phone_client').val().slice(0, 1)) != 6){
-                    good = false;
-                    message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";            
-                }else{
-                    let second = parseInt($('#phone_client').val().slice(1, 2));
-                    if(second != 5 && second != 6 && second != 7 && second != 8 && second != 9){
-                        good = false;
-                        message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";
-                    }
-                }
-            }else{
-                good = false;
-                message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";        
-            }
-        }else{
+        if(!reg.test($('#phone_client').val())){
             good = false;
             message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";
         }
@@ -72,6 +60,10 @@ $('#btnAddLivraison').on('click', async function(){
         $('#errorvalidationsModals').attr('data-keyboard', false);
         $('#errorvalidationsModals').modal('show');
     }else{
+        $('#type_of_delivery').replaceWith(`<span style="color: black; font-size: 20px;" id="type_of_delivery">${$("#type_delivery option:selected").text()}</span>`)
+        $('#mt_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="mt_conf">${$('#vue_amount').val()}</span>`)
+        $('#mt_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="mt_conf">${$('#vue_amount').val()}</span>`)
+        $('#mts_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="mts_conf">${$('#amount_paye').val() ? $('#amount_paye').val() : ''}</span>`)
         $('#observation_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="observation_conf">${$('#observation').val().trim()}</span>`);   
         $('#client_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="client_conf">${$('#nom_client').val().trim() +' '+ $('#phone_client').val().trim()}</span>`);   
         $('#itineraire_conf').replaceWith(`<span style="color: black; font-size: 20px;" id="itineraire_conf">${$('#itinerary').val().trim()}</span>`);
@@ -106,18 +98,57 @@ $(document).on('click', '#conf_save_livraison', function(){
                     $('#dataTable').prepend(`
                     <tr style="font-size:15px; color:black;">
                         <td><label>${livraison.order_number}</label></td>
+                        <td><label>${livraison.delivery_amount ? livraison.delivery_amount : "0"}</label></td>
                         <td><label></label></td>
-                        <td><label></label></td>
-                        <td><label>${livraison.state}</label></td>
+                        <td><label>${livraison.destination}</label></td>
+                        <td><label>${livraison.nom_client +' '+ livraison.phone_client}</label></td>
                         <td><label>${livraison.delivery_date}</label></td>
-                        <td><label>${livraison.delivery_amount ? livraison.delivery_amount : '0'}</label></td>
-                        <td><label>${livraison.vehicules ? livraison.vehicules.Immatriculation : ''}</label></td>
-                        <td><label>${livraison.itinerary}</label></td>
-                        <td><label>${livraison.observation ? livraison.observation : ''}</label></td>
+                        <td><label>${livraison.type_livraison}</label></td>
+                        <td><label>${livraison.state}</label></td>
+                        <td><label>${livraison.incident ? livraison.incident : ""}</label></td>
+                        <td><label>${livraison.etat_livraison ? livraison.etat_livraison : ""}</label></td>
+                        <td><label>${livraison.avis ? livraison.avis : ''}</label></td>
                         <td> 
                             <div class='row'>
-                            <button class="btn btn-sm btn-info mr-2" id="btnEdit"><span class="icon text-white-80"><i class="fas fa-edit"></i></span>Editer</button>
-                            <button class="btn btn-sm btn-danger mr-2" id="btnDelete"><span class="icon text-white-80"><i class="fas fa-trash"></i></span>Supprimer</button>
+                                <button class="btn btn-sm btn-info mr-2" id="btnEdit"><span class="icon text-white-80"><i class="fas fa-edit"></i></span>Editer</button>
+                                <button class="btn btn-sm btn-danger mr-2" id="btnDelete"><span class="icon text-white-80"><i class="fas fa-trash"></i></span>Supprimer</button>
+                                <button id="btnlivi" class="btn btn-sm btn-lg btn-secondary mr-2"
+                                                                title="Livraison"
+                                                            >
+                                                                <span class="icon text-white-80">
+                                                                    <i class="fas fa-lg fa-truck"></i>
+                                                                    <i class="fas fa-sm fa-clock"></i>
+                                                                </span>
+                                </button>
+                                <button 
+                                                                id="satisfaction_client"
+                                                                title="Avis Du Client"
+                                                                class="btn btn-sm btn-dark mr-2">
+                                                                Avis
+                                </button>
+                                <button 
+                                                                id="incident_livraison"
+                                                                title="Incident Subvenue"
+                                                                class="btn btn-sm btn-success mr-2"
+                                                                Incident
+                                </button>
+                                <button
+                                                                id="btnInfs"
+                                                                class="btn btn-lg btn-info mr-2"
+                                                                title="Information Supplémentaire"
+                                                            >
+                                                                <span class="icon text-white-80">
+                                                                    <i class="fas fa-lg fa-info"></i>
+                                                                </span>
+                                </button>
+                                <button
+                                                            title="Pièce Jointe"
+                                                            id="files"
+                                                            class="btn btn-lg btn-primary mr-2">
+                                                                <span class="icon text-white-80">
+                                                                    <i class="fas fa-lg fa-file"></i>
+                                                                </span>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -131,8 +162,8 @@ $(document).on('click', '#conf_save_livraison', function(){
                 $('#errorvalidationsModals').attr('data-keyboard', false);
                 $('#errorvalidationsModals').modal('show');        
             }
-        }               
-        })
+        }         
+    })
 });
 
 $(document).on('click', '#btnLoad', function(){
@@ -149,6 +180,7 @@ $(document).on('click', '#btnEdit', function(){
 
     let id = $(this).attr('data-id');
     let livraison = JSON.parse($(this).attr('data-livraisons'));
+    $('#edit_livs').replaceWith(`<span class="badge badge-success" id="edit_livs">${livraison.order_number}</span>`);
     if(parseInt(livraison.distance) > 0){
         $('#tonnages').prop('disabled', true);
         $('#recipe_ids').prop('disabled', true);
@@ -205,23 +237,7 @@ $('#btnEditLivraison').on('click', function(){
             good = false;
             message+="Veuillez Renseigner Le Téléphone Du Client !\n";
         }else{
-            if(reg.test($('#phone_clients').val())){
-                if($('#phone_clients').val().length == 9){
-                    if(parseInt($('#phone_clients').val().slice(0, 1)) != 6){
-                        good = false;
-                        message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";            
-                    }else{
-                        let second = parseInt($('#phone_clients').val().slice(1, 2));
-                        if(second != 5 && second != 6 && second != 7 && second != 8 && second != 9){
-                            good = false;
-                            message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";
-                        }
-                    }
-                }else{
-                    good = false;
-                    message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";        
-                }
-            }else{
+            if(!reg.test($('#phone_clients').val())){
                 good = false;
                 message+="Format Du Numéro De Téléphone Du Destinateur Incorrect !\n";
             }
@@ -257,32 +273,61 @@ $('#btnEditLivraison').on('click', function(){
 })
 
 
-$(document).on('click', '#btnDelete', function(){
-    if(confirm("Voulez-Vous Vraiment Annuler Cette Livraison ?") == true){
-        $.ajax({
-            type: 'GET',
-            url: 'deleteLivraison',
-            data: { id: $(this).attr('data-id')},
-            headers:{
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success:function(element){
-                if(parseInt(element[0]) == 1){
-                    location.reload();
-                }
-            }
-    })
-    }    
+$(document).on('click', '#btnannul', function(){
+    $('#btn_annulation').attr('data-id', $(this).attr('data-id'));
+    $('#motiff').replaceWith(`<span class="badge badge-success" id="motiff">${$(this).attr('data-bx')}</span>`);
 });
 
-$(document).on('change', '#btnLivraison', function(){
-    if($('#btnLivraison').val()){
-    if(confirm(`Voulez-Vous Vraiment Marquer Cette Livraison Comme ${$('#btnLivraison').val()}  ?`) == true){
+$(document).on('click', '#close_annulation_button', function(){
+    $('#motif_annulation').val('');
+});
+$(document).on('click', '#btn_annulation', function(){
+    if($('#motif_annulation').val().trim()){
+        if(confirm("Voulez-Vous Vraiment Annuler Cette Livraison ?") == true){
+            $.ajax({
+                type: 'GET',
+                url: 'deleteLivraison',
+                data: { 
+                        id: $(this).attr('data-id'),
+                        motif: $('#motif_annulation').val(),
+                    },
+                headers:{
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success:function(element){
+                    if(parseInt(element[0]) == 1){
+                        location.reload();
+                    }
+                }
+        })
+        } 
+    }else{
+        alert("Veuillez Renseigner Un Motif D'annulation !");
+    }  
+});
+
+$(document).on('click', '#btnlivi', function(){
+    let livraison = JSON.parse($(this).attr('data-livraison'));
+    $('#dem').replaceWith(`<span id="dem">${livraison.nom_client}</span>`);
+    $('#telo').replaceWith(`<span id="telo">${livraison.phone_client}</span>`)
+    $('#btns_livs').attr('data-id', livraison.id);
+    $('#btns_livs').attr('data-filename', livraison.filename);
+    $('#bx').replaceWith(`<span class="badge badge-success ml-4">${livraison.order_number}</span>`)
+});
+
+
+$(document).on('click', '#btns_livs', function(){
+    if($(this).attr('data-filename')){
+        if($('#datelivs').val() && $('#etat_livs').val()){
         $.ajax({
             type: 'GET',
-            url: 'doLivraison',
-            data: { state: $(this).val(),
-                    id: $(this).attr('data-id')},
+            url: 'doStatut',
+            data: { statut_livraison: "LIVRER",
+                    date: $('#datelivs').val(),
+                    id: $(this).attr('data-id'),
+                    etat_livraison: $('#etat_livs').val(),
+                    obs: $('#observation_a_la_livraison').val(),
+                  },
             headers:{
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -291,22 +336,42 @@ $(document).on('change', '#btnLivraison', function(){
                     location.reload();
                 }
             }
-        })
+        });
+        }else{
+            alert('Veuillez Renseigner Une Date De Livraison Ou Un Etat De La Livraison !');
+        }
+    }else{
+        alert("Veuillez Tout D'abord Chargé Le Fichier De Livraison !");
     }
-  }
-})
+});
+
+$(document).on('change', '#inputfile', function(){
+    if($(this).val()){
+        $('#btnloadfile').prop('disabled', false);
+    }else{
+        $('#btnloadfile').prop('disabled', true);
+    }
+});
 
 $(document).on('click', '#files', function(){
+    if(!$(this).attr('data-file')){
+        $('#btnloadfile').prop('disabled', true);
+    }
     $('#idlivraison').val($(this).attr('data-id'));
+    $('#fill').replaceWith(`<span class="badge badge-success mr-3" id="fill">${$(this).attr('data-bx')}</span>`);
 });
 
 
 $(document).on('click', '#satisfaction_client', function(){
     $('#btnSubmitAvis').attr('data-id', $(this).attr('data-id'));
     let livraison = JSON.parse($(this).attr('data-livraison'));
-
+    $('#nam_c').replaceWith(`<span id="nam_c">${livraison.nom_client}</span>`);
+    $('#tel_c').replaceWith(`<span id="tel_c">${livraison.phone_client}</span>`);
+    $('#satisft').replaceWith(`<span class="badge badge-success mr-3" id="satisft">${livraison.order_number}</span>`);
     $('#satiscomment').val(livraison.commentaire_avis);
 })
+
+
 $(document).on('click', '#btnSubmitAvis', function(){
     if($('#satis').val()){
         $.ajax({
@@ -334,9 +399,13 @@ $(document).on('click', '#btnSubmitAvis', function(){
 $(document).on('click', '#incident_livraison', function(){
     $('#btnSubmitIncident').attr('data-id', $(this).attr('data-id'));
     let livraison = JSON.parse($(this).attr('data-livraison'));
-
+    $('#obs').val(livraison.observation_a_la_livraison);
+    $('#nam').replaceWith(`<span id="nam">${livraison.nom_client}</span>`);
+    $('#tel').replaceWith(`<span id="tel">${livraison.phone_client}</span>`);
+    $('#indanc').replaceWith(`<span class="badge badge-success mr-3" id="indanc">${livraison.order_number}</span>`);
     $('#incide_liv').val(livraison.commentaire_incident);
-})
+});
+
 $(document).on('click', '#btnSubmitIncident', function(){
     if($('#incidant').val()){
         $.ajax({
@@ -363,46 +432,45 @@ $(document).on('click', '#btnSubmitIncident', function(){
 
 
 $(document).on('input', '#tonnage', function(){
-    if($('#tonnage').val() && $('#recipe_id').val()){
-        $('#distance').prop('disabled', true);
-
+    if($('#tonnage').val() && $('select[id="recipe_id"]').val()){
         let recettes = JSON.parse($('select[id="recipe_id"]').attr('data-r'));
-        let rectte_selectionne = recettes.find(r => r.id == $('select[id="recipe_id"]').val())
-        let montant = parseInt($('#tonnage').val()) * rectte_selectionne.value;
-        $('#vue_amount').val(montant);
+        let rectte_selectionne = recettes.find(r => r.id == $('select[id="recipe_id"]').val());
+        if(!rectte_selectionne.kilometrage){
+            let montant = parseInt($(this).val()) * rectte_selectionne.value;
+            $('#vue_amount').val(montant);    
+        }
     }else{
         $('#vue_amount').val('');
-        $('#distance').prop('disabled', false);
     }
 });
 
 
 //edit livraison
-$(document).on('input', '#tonnages', function(){
-    if($('#tonnages').val() || $('#recipe_id').val()){
-        $('#distances').prop('disabled', true);
-    }else{
-        $('#distances').prop('disabled', false);
-    }
-});
+// $(document).on('input', '#tonnages', function(){
+//     if($('#tonnages').val() || $('#recipe_id').val()){
+//         $('#distances').prop('disabled', true);
+//     }else{
+//         $('#distances').prop('disabled', false);
+//     }
+// });
 
-$(document).on('change', '#recipe_ids', function(){
-    if($('#recipe_ids').val()){
-        $('#distances').prop('disabled', true);
-    }else{
-        $('#distances').prop('disabled', false);
-    }
-});
+// $(document).on('change', '#recipe_ids', function(){
+//     if($('#recipe_ids').val()){
+//         $('#distances').prop('disabled', true);
+//     }else{
+//         $('#distances').prop('disabled', false);
+//     }
+// });
 
-$(document).on('input', '#distances', function(){
-    if($('#distances').val()){
-        $('#tonnages').prop('disabled', true);
-        $('#recipe_ids').prop('disabled', true);
-    }else{
-        $('#tonnages').prop('disabled', false);
-        $('#recipe_ids').prop('disabled', false);
-    }
-});
+// $(document).on('input', '#distances', function(){
+//     if($('#distances').val()){
+//         $('#tonnages').prop('disabled', true);
+//         $('#recipe_ids').prop('disabled', true);
+//     }else{
+//         $('#tonnages').prop('disabled', false);
+//         $('#recipe_ids').prop('disabled', false);
+//     }
+// });
 
 $(document).on('click', '#btnAnnuler', function(){
     $("#livraisonFormInsert")[0].reset();
@@ -414,47 +482,74 @@ $(document).on('click', '#btnAnnuler', function(){
     location.reload();
 });
 
+
 $(document).on('change', '#type_delivery', function(){
-    if($(this).val() == 1){
+    if($(this).val() == 2 || $(this).val() == 3){
+        $('#vue_amount').val('');
+        $('#amount_paye').val(0.0);
         $('#tonnage').val('');
         $('#tonnage').prop('disabled', true);
         $('#recipe_id').prop('disabled', true);
-        $('#recipe_id').append(`<option value="" selected></option>`)
+        $('#recipe_id').append(`<option value="" selected></option>`);
+        $('#distance').val('');
         $('#distance').prop('disabled', true);
         $('#consommation_id').prop('disabled', true);
-        
+        $('#amount_paye').prop('disabled', true);
+    }else if($(this).val() == 1){
+        $('#tonnage').prop('disabled', false);
+        $('#tonnage').val('');
+        $('#recipe_id').prop('disabled', false);
+        $('#recipe_id').append(`<option value="" selected></option>`);
+        $('#distance').val('');
+        $('#distance').prop('disabled', false);
+        $('#amount_paye').prop('disabled', true);
+        $('#amount_paye').val(0);
+        $('#vue_amount').val('');
     }else{
+        $('#amount_paye').val('');
+        $('#vue_amount').val('');
         $('#tonnage').prop('disabled', false);
         $('#recipe_id').prop('disabled', false);
+        $('#recipe_id').append(`<option value="" selected></option>`);
         $('#distance').prop('disabled', false);
+        $('#distance').val('');
+        $('#tonnage').prop('disabled', false);
+        $('#tonnage').val('');
         $('#consommation_id').prop('disabled', false);
+        $('#amount_paye').prop('disabled', false);
     }
 });
 
 $(document).on('change', '#recipe_id', function(){
-    if($('#tonnage').val() && $('#recipe_id').val()){
-        $('#distance').prop('disabled', true);
-    }else{
+    if($(this).val()){
+        $('#distance').val('');
         $('#vue_amount').val('');
-        $('#distance').prop('disabled', false);
+        $('#amount_paye').val('');
+        $('#tonnage').val('');
     }
 });
 
 
 
 $(document).on('input', '#distance', function(){
-    if($('#recipe_id').val() && $('#distance').val()){
-        $('#tonnage').prop('disabled', true);
+    if($('#distance').val() && $('#tonnage').val() && $('#recipe_id').val()){
+        let montant;
 
         let recettes = JSON.parse($('select[id="recipe_id"]').attr('data-r'));
-        let recette_selectionne = recettes.find(r => r.id == $('select[id="recipe_id"]').val())
-        let montant = (parseInt($('#distance').val()) * recette_selectionne.value)/10;
+        let recette_selectionne = recettes.find(r => parseInt(r.id) == parseInt($('select[id="recipe_id"]').val()));
+        if(recette_selectionne.kilometrage){
+            if(parseInt($('#distance').val()) < parseInt(recette_selectionne.kilometrage)){
+                montant = parseInt($('#tonnage').val()) * recette_selectionne.value;
+            }
+        }else{
+            montant = parseInt($('#tonnage').val()) * recette_selectionne.value;
+        }
         $('#vue_amount').val(montant);
     }else{
         $('#vue_amount').val('');
-        $('#tonnage').prop('disabled', false);
     }
 })
+
 
 $(document).on('click', '#btnInfs', function(){
     let livraison = JSON.parse($(this).attr('data-livraison'));
@@ -464,6 +559,6 @@ $(document).on('click', '#btnInfs', function(){
     $('#obser').val(livraison.observation);
     $('#incidants').val(livraison.commentaire_incident ? livraison.commentaire_incident : 'AUCUN INCIDENT');
     $('#avi').val(livraison.commentaire_avis ? livraison.commentaire_avis : 'AUCUN COMMENTAIRE');
-    
-    
+    $('#vehi').val(livraison.vehicules.Immatriculation + '  ' + livraison.vehicules.ModelVehicule);
+    $('#mt_a_paye').val(livraison.delivery_amount);
 });

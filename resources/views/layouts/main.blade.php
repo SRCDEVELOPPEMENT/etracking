@@ -47,43 +47,8 @@
                     <span>Tableau De Bord</span></a>
             </li>
 
-            <!-- Divider -->
             <hr class="sidebar-divider my-0">
-            @can(['lister-region'], ['creer-region'], ['editer-region'], ['supprimer-region'], ['voir-region'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('regions') }}">
-                    <i class="fa fa-globe fa-2x"></i>
-                    <span>Région</span></a>
-            </li>
-            @endcan
-            @can(['lister-role'], ['creer-role'], ['supprimer-role'], ['voir-role'], ['editer-role'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('roles') }}">
-                    <i class="fa fa-user-lock fa-2x"></i>
-                    <span>Role</span></a>
-            </li>
-            @endcan
-            @can(['lister-site'], ['creer-site'], ['supprimer-site'], ['voir-site'], ['editer-site'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('sites') }}">
-                    <i class="fa fa-building fa-2x"></i>
-                    <span>Site</span></a>
-            </li>
-            @endcan
-            @can(['lister-recette'], ['creer-recette'], ['supprimer-recette'], ['voir-recette'], ['editer-recette'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('recettes') }}">
-                    <i class="fa fa-battery-empty fa-2x"></i>
-                    <span>Recètte</span></a>
-            </li>
-            @endcan
-            @can(['lister-vehicule'], ['creer-vehicule'], ['supprimer-vehicule'], ['voir-vehicule'], ['editer-vehicule'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('vehicules') }}">
-                    <i class="fa fa-car fa-2x"></i>
-                    <span>Véhicule</span></a>
-            </li>
-            @endcan
+
             @can(['lister-livraison'], ['creer-livraison'], ['supprimer-livraison'], ['voir-livraison'], ['editer-livraison'])
             <li class="nav-item">
                 <a class="nav-link" href="{{ URL::to('livraisons') }}">
@@ -91,23 +56,77 @@
                     <span>Livraison</span></a>
             </li>
             @endcan
-            @can(['lister-utilisateur'], ['creer-utilisateur'], ['supprimer-utilisateur'], ['voir-utilisateur'], ['editer-utilisateur'])
+
+            @can(['etat-vehicule'])
+            <hr class="sidebar-divider">
+
             <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('users') }}">
-                    <i class="fa fa-user fa-2x"></i>
-                    <span>Utilisateur</span></a>
-            </li>
-            @endcan
-            @can(['lister-permission'], ['creer-permission'], ['supprimer-permission'], ['voir-permission'], ['editer-permission'])
-            <li class="nav-item">
-                <a class="nav-link" href="{{ URL::to('users') }}">
-                    <i class="fa fa-unlock fa-2x"></i>
-                    <span>Permission</span></a>
+                <a class="nav-link" href="{{ URL::to('etatVehicule') }}">
+                    <i class="fa fa-truck-monster fa-2x mr-2"></i>
+                    <span>Etat Véhicule</span></a>
             </li>
             @endcan
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Paramétrage</span>
+                    <span class="badge badge-danger badge-counter">+</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Module Gestion Livraison</h6>
+
+                        @can(['lister-region'], ['creer-region'], ['editer-region'], ['supprimer-region'], ['voir-region'])
+                        <a class="collapse-item" href="{{ URL::to('regions') }}">
+                        <i class="fa fa-globe fa-2x mr-3"></i>     
+                        Région</a>
+                        @endcan
+
+                        @can(['lister-role'], ['creer-role'], ['supprimer-role'], ['voir-role'], ['editer-role'])
+                            <a class="collapse-item" href="{{ URL::to('roles') }}">
+                                <i class="fa fa-user-lock fa-2x mr-3"></i>
+                                <span>Role</span></a>
+                        @endcan
+
+                        @can(['lister-site'], ['creer-site'], ['supprimer-site'], ['voir-site'], ['editer-site'])
+                            <a class="collapse-item" href="{{ URL::to('sites') }}">
+                                <i class="fa fa-building fa-2x mr-3"></i>
+                                <span>Site</span></a>
+                        @endcan
+
+                        @can(['lister-recette'], ['creer-recette'], ['supprimer-recette'], ['voir-recette'], ['editer-recette'])
+                            <a class="collapse-item" href="{{ URL::to('recettes') }}">
+                                <i class="fa fa-coins fa-2x mr-3"></i>
+                                <span>Recètte</span></a>
+                        @endcan
+
+                        @can(['lister-vehicule'], ['creer-vehicule'], ['supprimer-vehicule'], ['voir-vehicule'], ['editer-vehicule'])
+                            <a class="collapse-item" href="{{ URL::to('vehicules') }}">
+                                <i class="fa fa-truck-monster fa-2x mr-3"></i>
+                                <span>Véhicule</span></a>
+                        @endcan
+
+                        @can(['lister-utilisateur'], ['creer-utilisateur'], ['supprimer-utilisateur'], ['voir-utilisateur'], ['editer-utilisateur'])
+                            <a class="collapse-item" href="{{ URL::to('users') }}">
+                                <i class="fa fa-user fa-2x mr-3"></i>
+                                <span>Utilisateur</span></a>
+                        @endcan
+
+                        @can(['lister-permission'], ['creer-permission'], ['supprimer-permission'], ['voir-permission'], ['editer-permission'])
+                            <a class="collapse-item" href="{{ URL::to('permissions') }}">
+                                <i class="fa fa-unlock fa-2x mr-3"></i>
+                                <span>Permission</span></a>
+                        @endcan
+
+                    </div>
+                </div>
+            </li>
+
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

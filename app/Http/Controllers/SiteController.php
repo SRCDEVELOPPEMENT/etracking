@@ -46,12 +46,37 @@ class SiteController extends Controller
 
         $users = DB::table('users')->get();
 
+        $villes = [
+            'DOUALA',
+            'YAOUNDE',
+            'KRIBI',
+            'BAFOUSSAM',
+            'BERTOUA',
+            'EDEA',
+            'LIMBE',
+            'FOUMBAN',
+            'BANGA',
+            'NKONGSAMBA',
+            'BAMENDA',
+            'NGAOUNDERE',
+            'LOUM',
+            'GAROUA',
+            'MAROUA',
+            'KUMBA',
+            'MBOUDA',
+            'DSCHANG',
+            'EBOLOWA',
+            'KOUSSERI',
+            'ESEKA',
+        ];
+
         return view('sites.index',
         [
          'categories' => $categorieSite,
          'sits' => $sits, 
          'regions' => $regions, 
-         'users' => $users]);
+         'users' => $users,
+         'villes' => $villes]);
     }
 
     /**
@@ -93,6 +118,7 @@ class SiteController extends Controller
             $site->site_name = $input['site_name'];
             $site->region_id = intval($input['region_id']);
             $site->site_type = $input['site_type'];
+            $site->ville = $input['ville'];
             $site->save();
             $site = Site::with('regions')->get()->last();
             
@@ -165,6 +191,7 @@ class SiteController extends Controller
                 'site_name'=>$request->site_name,
                 'region_id'=> intval($request->region_id),
                 'site_type'=>$request->site_type,
+                'ville' => $request->ville,
             ]);
             
             toastr()->success('Site Modifier Avec Succèss !');

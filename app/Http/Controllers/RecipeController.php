@@ -72,7 +72,7 @@ class RecipeController extends Controller
             $recipe->nature = $input['nature'];
             $recipe->value = $input['value'];
             $recipe->itinerary = $input['itinerary'] ? $input['itinerary'] : '';
-            //$recipe->vehicule_id = $input['vehicule_id'];
+            $recipe->kilometrage = $input['kilometrage'] ? intval($input['kilometrage']) : NULL;
 
             $recipe->save();
 
@@ -117,33 +117,11 @@ class RecipeController extends Controller
      */
     public function update(Request $request)
     {
-        // $vehicules = DB::table('vehicules')->get();
-
-        // $Qte = 0;
-        // $tab = array();
-
-        // foreach ($vehicules as $vehicule) {
-        //     if($vehicule->id != intval($request->input('id'))){
-        //         array_push($tab, $vehicule);
-        //     }
-        // }
-
-        // foreach ($tab as $vehicule) {
-        //     $vehicule_present = strtolower(Str::ascii(str_replace(" ", "", $vehicule->Immatriculation)));
-        //     $vehicule_int = strtolower(Str::ascii(str_replace(" ", "", $request->input('Immatriculation'))));
-        //     if(strcmp($vehicule_present, $vehicule_int) == 0){
-        //         $Qte += 1;
-        //     }
-        // }
-
-        // if($Qte > 0){
-        //     return response()->json([]);
-        // }else{
             DB::table('recipes')->where('id', $request->id)->update([
                 'itinerary'=> $request->itinerary,
                 'nature'=> $request->nature,
                 'value'=> $request->value,
-                'vehicule_id' => $request->vehicule_id
+                'kilometrage' => $request->input('kilometrage') ? intval($request->input('kilometrage')) : NULL,
             ]);
             
             toastr()->success('Recètte Modifier Avec Succèss !');

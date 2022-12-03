@@ -47,17 +47,24 @@ Route::get('/dashboard', function () {
 
     $vehicules = DB::table('vehicules')->get();
 
+    $users = DB::table('users')->get();
+
     $sites = DB::table('sites')->where('site_type', '=', 'AGENCE')->get();
+
+    $global = array();
+    $gobalRegions = array();
 
     toastr()->info('BIENVENUE '. Auth::user()->fullname .' !');
 
     return view('dashboard',
     [
-        'nbre_livraisons' => $nbre_livraisons,
         'livraisons' => $livraisons,
         'sites' => $sites,
         'regions' => $regions,
         'vehicules' => $vehicules,
+        'users' => $users,
+        'global' => $global,
+        'gobalRegions' => $gobalRegions,
     ]);
 })->middleware(['auth'])->name('dashboard');
 
@@ -92,7 +99,17 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::get('deleteLivraison', [LivraisonController::class, 'destroy'])->name('deleteLivraison');
 
-    Route::get('doLivraison', [LivraisonController::class, 'delivery'])->name('doLivraison');
+    Route::get('etatVehicule', [LivraisonController::class, 'etat_car'])->name('etatVehicule');
+    
+    Route::get('car_etats', [LivraisonController::class, 'etat_truck'])->name('car_etats');
+
+    Route::get('stat_en_agence', [LivraisonController::class, 'statAgence'])->name('stat_en_agence');
+    
+    //Route::get('stat_par_region', [LivraisonController::class, 'statRegion'])->name('stat_par_region');
+
+    Route::get('generate-livraison', [LivraisonController::class, 'generate'])->name('generate-livraison');
+
+    Route::get('doStatut', [LivraisonController::class, 'statut'])->name('doStatut');
 
     Route::get('livraison_informe', [LivraisonController::class, 'informe'])->name('livraison_informe');
     
@@ -103,6 +120,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('upload', [LivraisonController::class, 'uploadfile'])->name('upload');
 
     
+
     Route::post('createPermission', [PermissionController::class, 'store'])->name('createPermission');
 
     Route::post('editPermission', [PermissionController::class, 'update'])->name('editPermission');
